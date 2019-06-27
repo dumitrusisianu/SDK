@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7393bff647614a449a110d62bca0b16b, type: 3}
-  m_Name: DefaultMixedRealityCameraInputSimulationProfile
+  m_Script: {fileID: 11500000, guid: 54e0b24e2254d4b4a9e04a2f9ecdcf4b, type: 3}
+  m_Name: DefaultMixedRealityEyeTrackingSimulationProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
+  simulateEyePosition: 1
