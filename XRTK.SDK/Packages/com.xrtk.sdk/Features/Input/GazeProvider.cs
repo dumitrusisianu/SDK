@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections;
 using UnityEngine;
 using XRTK.EventDatum.Input;
 using XRTK.Interfaces.InputSystem;
@@ -251,8 +252,6 @@ namespace XRTK.SDK.Input
             if (_isActivated)
                 return;
             
-            _isActivated = true;
-            
             base.OnEnable();
 
             if (!delayInitialization)
@@ -397,6 +396,7 @@ namespace XRTK.SDK.Input
             await WaitUntilInputSystemValid;
             MixedRealityToolkit.InputSystem.RaiseSourceDetected(GazeInputSource);
             GazePointer.BaseCursor?.SetVisibility(true);
+            _isActivated = true;
         }
 
         public void SetState(bool state)
@@ -404,9 +404,7 @@ namespace XRTK.SDK.Input
             if (state)
                 OnEnable();
             else
-                OnDisable();
-            
-            _isActivated = state;
+                StartCoroutine(SetStateRoutine(false));
         }
 
         /// <summary>
@@ -420,6 +418,14 @@ namespace XRTK.SDK.Input
             Debug.Assert(GazePointer.BaseCursor != null, "Failed to load cursor");
             GazePointer.BaseCursor.SetVisibilityOnSourceDetected = false;
             GazePointer.BaseCursor.Pointer = GazePointer;
+        }
+
+        IEnumerator SetStateRoutine(bool state)
+        {
+            if(!state)
+                yield return new WaitUntil(() => _isActivated);
+
+            OnDisable();
         }
 
         #endregion Utilities
