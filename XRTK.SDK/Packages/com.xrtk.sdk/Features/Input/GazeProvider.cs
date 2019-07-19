@@ -128,6 +128,9 @@ namespace XRTK.SDK.Input
         /// <inheritdoc />
         public GameObject GameObjectReference => gameObject;
 
+        public bool isActive => _isActivated;
+        private bool _isActivated; 
+
         private float lastHitDistance = 2.0f;
 
         private bool delayInitialization = true;
@@ -245,6 +248,11 @@ namespace XRTK.SDK.Input
 
         protected override void OnEnable()
         {
+            if (_isActivated)
+                return;
+            
+            _isActivated = true;
+            
             base.OnEnable();
 
             if (!delayInitialization)
@@ -317,6 +325,10 @@ namespace XRTK.SDK.Input
 
         protected override void OnDisable()
         {
+            if(!_isActivated)
+                return;
+
+            _isActivated = false;
             base.OnDisable();
             GazePointer.BaseCursor?.SetVisibility(false);
             MixedRealityToolkit.InputSystem?.RaiseSourceLost(GazeInputSource);
@@ -385,6 +397,16 @@ namespace XRTK.SDK.Input
             await WaitUntilInputSystemValid;
             MixedRealityToolkit.InputSystem.RaiseSourceDetected(GazeInputSource);
             GazePointer.BaseCursor?.SetVisibility(true);
+        }
+
+        public void SetState(bool state)
+        {
+            if (state)
+                OnEnable();
+            else
+                OnDisable();
+            
+            _isActivated = state;
         }
 
         /// <summary>
