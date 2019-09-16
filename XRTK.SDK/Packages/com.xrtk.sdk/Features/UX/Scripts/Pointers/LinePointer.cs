@@ -89,6 +89,7 @@ namespace XRTK.SDK.UX.Pointers
 
         protected override void OnEnable()
         {
+            Debug.LogError("LinePointer Enabled!!");
             base.OnEnable();
             CheckInitialization();
         }
