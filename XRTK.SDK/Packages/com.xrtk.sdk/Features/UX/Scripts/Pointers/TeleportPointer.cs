@@ -124,6 +124,13 @@ namespace XRTK.SDK.UX.Pointers
             set => base.PointerOrientation = value;
         }
 
+        protected override void Start()
+        {
+            base.Start();
+            
+            Debug.LogError("Teleport pointer spawned!");
+        }
+
         public override void OnPreRaycast()
         {
             if (LineBase == null)
@@ -247,6 +254,7 @@ namespace XRTK.SDK.UX.Pointers
                 eventData.Handedness == Handedness &&
                 eventData.MixedRealityInputAction == teleportAction)
             {
+                Debug.LogError("Reading thumbstick!");
                 currentInputPosition = eventData.InputData;
             }
 
@@ -335,6 +343,7 @@ namespace XRTK.SDK.UX.Pointers
                     if (TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
                         TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
                     {
+                        Debug.LogError("Teleport started!");
                         MixedRealityToolkit.TeleportSystem?.RaiseTeleportStarted(this, TeleportHotSpot);
                     }
                 }
@@ -344,6 +353,7 @@ namespace XRTK.SDK.UX.Pointers
                     canTeleport = false;
                     teleportEnabled = false;
                     MixedRealityToolkit.TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
+                    Debug.Log("Teleport canceled!");
                 }
             }
 
